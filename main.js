@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { polyhedra, polygonColors, buildColoredGeometry, buildEdgesGeometry } from './polyhedra.js';
+import { polyhedra, polygonColors, buildColoredGeometry, buildEdgesGeometry, computeDual } from './polyhedra.js';
 
 // Scene setup
 const scene = new THREE.Scene();
@@ -59,6 +59,7 @@ const wireframeMaterial = new THREE.LineBasicMaterial({
 // State
 let currentShape = 'tetrahedron';
 let currentDisplay = 'edges';
+let showDual = false;
 let meshGroup = null;
 
 function createPolyhedron() {
@@ -74,12 +75,22 @@ function createPolyhedron() {
   const data = polyhedra[currentShape];
   const scale = 1.5;
 
+  // Get vertices and faces (possibly from dual)
+  let vertices = data.vertices;
+  let faces = data.faces;
+
+  if (showDual) {
+    const dual = computeDual(data.vertices, data.faces);
+    vertices = dual.vertices;
+    faces = dual.faces;
+  }
+
   // Build colored geometry from face data
-  const geometry = buildColoredGeometry(data.vertices, data.faces, scale);
+  const geometry = buildColoredGeometry(vertices, faces, scale);
   const solidMesh = new THREE.Mesh(geometry, coloredMaterial);
 
   // Build edges
-  const edgesGeometry = buildEdgesGeometry(data.vertices, data.faces, scale);
+  const edgesGeometry = buildEdgesGeometry(vertices, faces, scale);
   const edgesLine = new THREE.LineSegments(edgesGeometry, edgeMaterial);
   const wireframeLine = new THREE.LineSegments(edgesGeometry, wireframeMaterial);
 
@@ -294,6 +305,14 @@ wireframeToggle.addEventListener('click', () => {
     wireframeToggle.classList.add('active');
   }
   updateDisplay();
+});
+
+// Dual toggle handler
+const dualToggle = document.getElementById('dual-toggle');
+dualToggle.addEventListener('click', () => {
+  showDual = !showDual;
+  dualToggle.classList.toggle('active', showDual);
+  createPolyhedron();
 });
 
 // Handle window resize

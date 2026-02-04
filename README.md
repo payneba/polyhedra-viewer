@@ -5,6 +5,7 @@ An interactive 3D viewer for Platonic and Archimedean solids built with Three.js
 ## Features
 
 - View all 5 Platonic solids and 13 Archimedean solids
+- Toggle to view dual polyhedra (Catalan solids for Archimedean)
 - Faces colored by polygon type (triangles, squares, pentagons, etc.)
 - Orbit controls for rotation and zoom
 - Toggle between solid+edges and wireframe display

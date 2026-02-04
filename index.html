@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polyhedra Viewer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="container"></div>
+
+  <div id="controls">
+    <h2>Polyhedra Viewer</h2>
+
+    <div class="control-group">
+      <h3>Shape</h3>
+      <div class="button-group" id="shape-buttons">
+        <!-- Generated dynamically -->
+      </div>
+    </div>
+
+    <div class="control-group">
+      <h3>Display</h3>
+      <div class="button-group" id="display-buttons">
+        <button data-display="solid" class="active">Solid</button>
+        <button data-display="wireframe">Wireframe</button>
+        <button data-display="edges">Solid + Edges</button>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <h3>Color Legend</h3>
+      <div id="color-legend">
+        <!-- Generated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

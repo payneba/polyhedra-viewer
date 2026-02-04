@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell.exe -Command \"npm install\")",
+      "Bash(powershell.exe -Command \"npm run dev\")",
+      "Bash(git init:*)",
+      "Bash(git checkout:*)",
+      "WebSearch",
+      "Bash(powershell.exe:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nUse polyhedra npm package for accurate vertex/face data\n\n- Add all 13 Archimedean solids with proper face definitions\n- Replace hand-coded vertex data with finnp/polyhedra package\n- All faces now correctly colored by polygon type\n- Remove convex hull fallback (no longer needed)\n- White edges for better visibility on dark background\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git commit:*)"
+    ]
+  }
+}

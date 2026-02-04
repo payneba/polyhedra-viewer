@@ -8,12 +8,12 @@ scene.background = new THREE.Color(0x1a1a2e);
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
-  75,
+  35,
   window.innerWidth / window.innerHeight,
   0.1,
   1000
 );
-camera.position.z = 4;
+camera.position.z = 8;
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -58,7 +58,7 @@ const wireframeMaterial = new THREE.LineBasicMaterial({
 
 // State
 let currentShape = 'tetrahedron';
-let currentDisplay = 'solid';
+let currentDisplay = 'edges';
 let meshGroup = null;
 
 function createPolyhedron() {
@@ -98,17 +98,12 @@ function updateDisplay() {
   // Clear group
   meshGroup.clear();
 
-  switch (currentDisplay) {
-    case 'solid':
-      meshGroup.add(solidMesh);
-      break;
-    case 'wireframe':
-      meshGroup.add(wireframeLine);
-      break;
-    case 'edges':
-      meshGroup.add(solidMesh);
-      meshGroup.add(edgesLine);
-      break;
+  if (currentDisplay === 'wireframe') {
+    meshGroup.add(wireframeLine);
+  } else {
+    // Default: solid + edges
+    meshGroup.add(solidMesh);
+    meshGroup.add(edgesLine);
   }
 }
 
@@ -195,14 +190,17 @@ function selectShape(key) {
   createPolyhedron();
 }
 
-// Display mode handlers
-document.querySelectorAll('#display-buttons button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelector('#display-buttons .active').classList.remove('active');
-    btn.classList.add('active');
-    currentDisplay = btn.dataset.display;
-    updateDisplay();
-  });
+// Wireframe toggle handler
+const wireframeToggle = document.getElementById('wireframe-toggle');
+wireframeToggle.addEventListener('click', () => {
+  if (currentDisplay === 'wireframe') {
+    currentDisplay = 'edges';
+    wireframeToggle.classList.remove('active');
+  } else {
+    currentDisplay = 'wireframe';
+    wireframeToggle.classList.add('active');
+  }
+  updateDisplay();
 });
 
 // Handle window resize

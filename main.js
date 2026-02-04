@@ -121,7 +121,7 @@ function generateThumbnail(shapeKey, size = 50) {
 
   // Create camera
   const thumbCamera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-  thumbCamera.position.z = 4;
+  thumbCamera.position.z = 6;
 
   // Add lighting
   const thumbAmbient = new THREE.AmbientLight(0xffffff, 0.6);
@@ -132,7 +132,7 @@ function generateThumbnail(shapeKey, size = 50) {
 
   // Create grayscale material
   const thumbMaterial = new THREE.MeshStandardMaterial({
-    color: 0xaaaaaa,
+    color: 0x888888,
     metalness: 0.1,
     roughness: 0.6,
     side: THREE.DoubleSide
@@ -149,7 +149,7 @@ function generateThumbnail(shapeKey, size = 50) {
 
   // Add edges
   const edgesGeometry = buildEdgesGeometry(data.vertices, data.faces, 1.2);
-  const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x444444 });
+  const edgesMaterial = new THREE.LineBasicMaterial({ color: 0xcccccc });
   const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
 
   // Rotate for better view
@@ -199,13 +199,17 @@ function generateUI() {
     const thumb = document.createElement('div');
     thumb.className = 'shape-thumb';
     thumb.dataset.shape = key;
-    thumb.title = name;
     if (key === currentShape) thumb.classList.add('active');
 
     const img = document.createElement('img');
     img.src = generateThumbnail(key);
     img.alt = name;
     thumb.appendChild(img);
+
+    const tooltip = document.createElement('span');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = name;
+    thumb.appendChild(tooltip);
 
     thumb.addEventListener('click', () => selectShape(key));
     shapeButtons.appendChild(thumb);
@@ -221,12 +225,16 @@ function generateUI() {
     const thumb = document.createElement('div');
     thumb.className = 'shape-thumb';
     thumb.dataset.shape = key;
-    thumb.title = name;
 
     const img = document.createElement('img');
     img.src = generateThumbnail(key);
     img.alt = name;
     thumb.appendChild(img);
+
+    const tooltip = document.createElement('span');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = name;
+    thumb.appendChild(tooltip);
 
     thumb.addEventListener('click', () => selectShape(key));
     shapeButtons.appendChild(thumb);

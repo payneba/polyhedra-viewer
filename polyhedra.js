@@ -1,5 +1,13 @@
 import * as THREE from 'three';
-import polyhedraData from 'polyhedra';
+
+// Polyhedra geometry data vendored from the "polyhedra" npm package
+// Original data from "Virtual Polyhedra" by George W. Hart
+// See data/COPYRIGHT.txt for full attribution
+import platonic from './data/platonic.json';
+import archimedean from './data/archimedean.json';
+import johnson from './data/johnson.json';
+
+const polyhedraData = { platonic, archimedean, johnson };
 
 // Color convention by polygon type (number of sides)
 export const polygonColors = {

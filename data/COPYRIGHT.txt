@@ -1,0 +1,28 @@
+Polyhedra Data Attribution
+==========================
+
+The polyhedra geometry data in this directory (vertex coordinates and face
+definitions) originates from:
+
+  "Virtual Polyhedra: The Encyclopedia of Polyhedra"
+  by George W. Hart
+  http://www.georgehart.com/virtual-polyhedra/vp.html
+
+The data was converted to JSON format by Lee Stemkoski and distributed via
+the npm package "polyhedra" by Finn Pauls (https://github.com/finnp/polyhedra).
+
+Original Copyright Notice
+-------------------------
+
+The data from the polyhedra is from the website "Virtual Polyhedra: The
+Encyclopedia of Polyhedra" by George W. Hart. The original copyright by Hart
+allows noncommercial use:
+
+  "An exception is the collection of individual *.wrl files which contain the
+  mathematical description of each polyhedron. Because these contain
+  mathematical information, they may be of use to others with an interest in
+  polyhedra. They may be reproduced and used for noncommercial purposes."
+
+Source: http://www.georgehart.com/virtual-polyhedra/copyright.html
+
+This project uses the data for noncommercial, educational purposes.

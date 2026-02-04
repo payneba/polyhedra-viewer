@@ -1,7 +1,7 @@
 {
   "name": "threejs-polyhedra-viewer",
   "version": "1.0.0",
-  "description": "Interactive viewer for the 5 Platonic solids",
+  "description": "Interactive 3D viewer for Platonic, Archimedean, and Johnson solids",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "polyhedra": "^1.0.0",
     "three": "^0.170.0"
   },
   "devDependencies": {

@@ -24,23 +24,31 @@ An interactive 3D viewer for Platonic, Archimedean, and Johnson solids built wit
 
 ## Getting Started
 
+**View online:** https://payneba.github.io/polyhedra-viewer/
+
+**Run locally:**
 ```bash
 npm install
 npm run dev
 ```
 
-Open http://localhost:5173 in your browser.
+Open http://localhost:5173/polyhedra-viewer/ in your browser.
 
 ## Dependencies
 
 ### Runtime
 
 - **[three](https://threejs.org/)** (v0.170.0) - 3D graphics library for WebGL rendering, camera controls, and geometry
-- **[polyhedra](https://github.com/finnp/polyhedra)** (v1.0.0) - JSON data for polyhedra vertices and faces, sourced from George W. Hart's Virtual Polyhedra
 
 ### Development
 
 - **[vite](https://vitejs.dev/)** (v6.0.0) - Fast development server with hot module replacement
+
+### Vendored Data
+
+The polyhedra geometry data (vertex coordinates and face definitions) in `data/` is vendored
+from the [polyhedra](https://github.com/finnp/polyhedra) npm package by Finn Pauls, which
+provides JSON-formatted data originally from George W. Hart's Virtual Polyhedra encyclopedia.
 
 ## Polyhedra Included
 
@@ -69,6 +77,13 @@ Open http://localhost:5173 in your browser.
 ### Johnson Solids (92)
 All 92 Johnson solids (J1-J92), convex polyhedra with regular polygon faces that are not Platonic, Archimedean, prisms, or antiprisms.
 
-## License
+## Data Attribution
 
-Polyhedra data from Virtual Polyhedra by George W. Hart, used under noncommercial license.
+The polyhedra geometry data is from **[Virtual Polyhedra: The Encyclopedia of Polyhedra](http://www.georgehart.com/virtual-polyhedra/vp.html)** by **George W. Hart**, converted to JSON by Lee Stemkoski and packaged by Finn Pauls.
+
+The original data is used under George W. Hart's noncommercial license:
+
+> "The collection of individual files which contain the mathematical description of each
+> polyhedron... may be reproduced and used for noncommercial purposes."
+
+See `data/COPYRIGHT.txt` for full attribution details.

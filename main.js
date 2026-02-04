@@ -99,6 +99,7 @@ function createPolyhedron() {
   scene.add(meshGroup);
 
   updateDisplay();
+  updateShapeInfo(vertices, faces);
 }
 
 function updateDisplay() {
@@ -116,6 +117,54 @@ function updateDisplay() {
     meshGroup.add(solidMesh);
     meshGroup.add(edgesLine);
   }
+}
+
+// Dual name mappings for Catalan solids
+const dualNames = {
+  tetrahedron: 'Tetrahedron',
+  cube: 'Octahedron',
+  octahedron: 'Cube',
+  dodecahedron: 'Icosahedron',
+  icosahedron: 'Dodecahedron',
+  truncatedTetrahedron: 'Triakis Tetrahedron',
+  cuboctahedron: 'Rhombic Dodecahedron',
+  truncatedCube: 'Triakis Octahedron',
+  truncatedOctahedron: 'Tetrakis Hexahedron',
+  rhombicuboctahedron: 'Deltoidal Icositetrahedron',
+  truncatedCuboctahedron: 'Disdyakis Dodecahedron',
+  snubCube: 'Pentagonal Icositetrahedron',
+  icosidodecahedron: 'Rhombic Triacontahedron',
+  truncatedDodecahedron: 'Triakis Icosahedron',
+  truncatedIcosahedron: 'Pentakis Dodecahedron',
+  rhombicosidodecahedron: 'Deltoidal Hexecontahedron',
+  truncatedIcosidodecahedron: 'Disdyakis Triacontahedron',
+  snubDodecahedron: 'Pentagonal Hexecontahedron'
+};
+
+function updateShapeInfo(vertices, faces) {
+  const infoEl = document.getElementById('shape-info');
+  if (!infoEl) return;
+
+  const data = polyhedra[currentShape];
+  const name = showDual ? dualNames[currentShape] : data.name;
+
+  // Count edges (each edge shared by 2 faces)
+  const edgeSet = new Set();
+  for (const face of faces) {
+    for (let i = 0; i < face.length; i++) {
+      const a = face[i], b = face[(i + 1) % face.length];
+      edgeSet.add(a < b ? `${a}-${b}` : `${b}-${a}`);
+    }
+  }
+
+  infoEl.innerHTML = `
+    <div class="shape-name">${name}</div>
+    <div class="shape-stats">
+      <span>${vertices.length} vertices</span>
+      <span>${edgeSet.size} edges</span>
+      <span>${faces.length} faces</span>
+    </div>
+  `;
 }
 
 // Generate a thumbnail for a polyhedron

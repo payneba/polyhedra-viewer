@@ -14,29 +14,23 @@ body {
   height: 100vh;
 }
 
+/* Left control panel */
 #controls {
   position: fixed;
   top: 20px;
   left: 20px;
-  max-height: calc(100vh - 40px);
+  max-height: calc(100vh - 100px);
   overflow-y: auto;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 16px;
+  border-radius: 10px;
   color: white;
   backdrop-filter: blur(10px);
-  width: 280px;
-}
-
-#controls h2 {
-  font-size: 18px;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  width: 250px;
 }
 
 .control-group {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .control-group:last-child {
@@ -55,7 +49,7 @@ body {
 .button-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
 }
 
 .category-label {
@@ -81,8 +75,8 @@ button {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
-  padding: 6px 10px;
-  border-radius: 6px;
+  padding: 5px 10px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 11px;
   transition: all 0.2s ease;
@@ -99,9 +93,9 @@ button.active {
 
 /* Shape thumbnails */
 .shape-thumb {
-  width: 50px;
-  height: 50px;
-  border-radius: 6px;
+  width: 44px;
+  height: 44px;
+  border-radius: 5px;
   border: 2px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -140,17 +134,18 @@ button.active {
   pointer-events: none;
   transition: opacity 0.1s ease;
   margin-bottom: 4px;
+  z-index: 100;
 }
 
 .shape-thumb:hover .tooltip {
   opacity: 1;
 }
 
-/* Color Legend */
+/* Color Legend - compact inline */
 #color-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 4px 10px;
 }
 
 .legend-item {
@@ -158,18 +153,54 @@ button.active {
   align-items: center;
   gap: 6px;
   font-size: 11px;
+  color: #ccc;
 }
 
 .color-swatch {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Bottom info bar */
+#info-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: white;
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+#shape-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+#shape-info .shape-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+#shape-info .shape-stats {
+  font-size: 13px;
+  color: #aaa;
+  display: flex;
+  gap: 12px;
+}
+
+#shape-info .shape-stats span {
+  display: inline-block;
 }
 
 /* Scrollbar styling */
 #controls::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 #controls::-webkit-scrollbar-track {

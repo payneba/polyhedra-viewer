@@ -205,28 +205,98 @@ export function computeDual(vertices, faces) {
     }
   }
 
-  // Step 4: Build dual faces by sorting adjacent face indices angularly around each vertex
+  // Step 4: Build dual faces by ordering faces around each vertex by edge adjacency
+  // Two faces are adjacent around a vertex if they share an edge at that vertex
   const dualFaces = [];
+
+  // Build edge-to-faces map for adjacency lookup
+  const edgeToFaces = {};
+  for (let fi = 0; fi < faces.length; fi++) {
+    const face = faces[fi];
+    for (let i = 0; i < face.length; i++) {
+      const a = face[i], b = face[(i + 1) % face.length];
+      const key = a < b ? `${a}-${b}` : `${b}-${a}`;
+      if (!edgeToFaces[key]) edgeToFaces[key] = [];
+      edgeToFaces[key].push(fi);
+    }
+  }
+
   for (const vi of Object.keys(vertexToFaces)) {
     const adjFaces = vertexToFaces[vi];
     if (adjFaces.length < 3) continue;
 
-    const vertexPos = vertices[parseInt(vi)];
-    const normal = normalize(vertexPos);
+    const vertexIdx = parseInt(vi);
 
-    // Create orthonormal basis perpendicular to vertex direction
-    const arbitrary = Math.abs(normal[0]) < 0.9 ? [1, 0, 0] : [0, 1, 0];
-    const u = normalize(cross(normal, arbitrary));
-    const v = cross(normal, u);
+    // Order faces by walking around the vertex via shared edges
+    const orderedFaces = [adjFaces[0]];
+    const used = new Set([adjFaces[0]]);
 
-    // Sort faces by angle around the vertex
-    const withAngles = adjFaces.map(fi => {
-      const pos = sub(dualVertices[fi], vertexPos);
-      return { fi, angle: Math.atan2(dot(pos, v), dot(pos, u)) };
-    });
-    withAngles.sort((a, b) => a.angle - b.angle);
+    while (orderedFaces.length < adjFaces.length) {
+      const currentFace = orderedFaces[orderedFaces.length - 1];
+      const face = faces[currentFace];
 
-    dualFaces.push(withAngles.map(x => x.fi));
+      // Find edges of this face that include the vertex
+      let foundNext = false;
+      for (let i = 0; i < face.length; i++) {
+        if (face[i] === vertexIdx || face[(i + 1) % face.length] === vertexIdx) {
+          const a = face[i], b = face[(i + 1) % face.length];
+          const key = a < b ? `${a}-${b}` : `${b}-${a}`;
+          const sharedFaces = edgeToFaces[key];
+
+          for (const nextFace of sharedFaces) {
+            if (nextFace !== currentFace && adjFaces.includes(nextFace) && !used.has(nextFace)) {
+              orderedFaces.push(nextFace);
+              used.add(nextFace);
+              foundNext = true;
+              break;
+            }
+          }
+          if (foundNext) break;
+        }
+      }
+
+      // Safety: if we can't find next face, add remaining faces (shouldn't happen for valid polyhedra)
+      if (!foundNext) {
+        for (const f of adjFaces) {
+          if (!used.has(f)) {
+            orderedFaces.push(f);
+            used.add(f);
+            break;
+          }
+        }
+      }
+    }
+
+    const faceIndices = orderedFaces;
+
+    // Compute polygon normal using Newell's method
+    let nx = 0, ny = 0, nz = 0;
+    for (let i = 0; i < faceIndices.length; i++) {
+      const curr = dualVertices[faceIndices[i]];
+      const next = dualVertices[faceIndices[(i + 1) % faceIndices.length]];
+      nx += (curr[1] - next[1]) * (curr[2] + next[2]);
+      ny += (curr[2] - next[2]) * (curr[0] + next[0]);
+      nz += (curr[0] - next[0]) * (curr[1] + next[1]);
+    }
+
+    // Compute face centroid
+    let cx = 0, cy = 0, cz = 0;
+    for (const fi of faceIndices) {
+      cx += dualVertices[fi][0];
+      cy += dualVertices[fi][1];
+      cz += dualVertices[fi][2];
+    }
+    cx /= faceIndices.length;
+    cy /= faceIndices.length;
+    cz /= faceIndices.length;
+
+    // For a convex polyhedron centered at origin, face normal should point
+    // in same direction as centroid (outward from origin)
+    if (nx * cx + ny * cy + nz * cz < 0) {
+      faceIndices.reverse();
+    }
+
+    dualFaces.push(faceIndices);
   }
 
   // Step 5: Normalize to similar scale as original

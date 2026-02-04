@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { polyhedra, polygonColors, buildColoredGeometry, buildEdgesGeometry, buildConvexGeometry } from './polyhedra.js';
+import { polyhedra, polygonColors, buildColoredGeometry, buildEdgesGeometry } from './polyhedra.js';
 
 // Scene setup
 const scene = new THREE.Scene();
@@ -46,20 +46,14 @@ const coloredMaterial = new THREE.MeshStandardMaterial({
   side: THREE.DoubleSide
 });
 
-const convexMaterial = new THREE.MeshStandardMaterial({
-  color: 0x888888,
-  metalness: 0.2,
-  roughness: 0.5,
-  side: THREE.DoubleSide
-});
-
 const edgeMaterial = new THREE.LineBasicMaterial({
-  color: 0x000000,
-  linewidth: 2
+  color: 0xffffff,
+  linewidth: 3
 });
 
 const wireframeMaterial = new THREE.LineBasicMaterial({
-  color: 0x00cec9
+  color: 0xffffff,
+  linewidth: 2
 });
 
 // State
@@ -80,32 +74,14 @@ function createPolyhedron() {
   const data = polyhedra[currentShape];
   const scale = 1.5;
 
-  // Check if we have face data or need to use convex hull
-  const hasFaces = data.faces && data.faces.length > 0;
+  // Build colored geometry from face data
+  const geometry = buildColoredGeometry(data.vertices, data.faces, scale);
+  const solidMesh = new THREE.Mesh(geometry, coloredMaterial);
 
-  let solidMesh, edgesLine, wireframeLine;
-
-  if (hasFaces) {
-    // Build colored geometry from face data
-    const geometry = buildColoredGeometry(data.vertices, data.faces, scale);
-    solidMesh = new THREE.Mesh(geometry, coloredMaterial);
-
-    // Build edges
-    const edgesGeometry = buildEdgesGeometry(data.vertices, data.faces, scale);
-    edgesLine = new THREE.LineSegments(edgesGeometry, edgeMaterial);
-    wireframeLine = new THREE.LineSegments(edgesGeometry, wireframeMaterial);
-  } else {
-    // Use convex hull for solids without explicit face data
-    const geometry = buildConvexGeometry(data.vertices, scale);
-    solidMesh = new THREE.Mesh(geometry, convexMaterial);
-
-    // Use Three.js EdgesGeometry for edges
-    const edgesGeometry = new THREE.EdgesGeometry(geometry, 15);
-    edgesLine = new THREE.LineSegments(edgesGeometry, edgeMaterial);
-
-    const wireframeGeometry = new THREE.WireframeGeometry(geometry);
-    wireframeLine = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
-  }
+  // Build edges
+  const edgesGeometry = buildEdgesGeometry(data.vertices, data.faces, scale);
+  const edgesLine = new THREE.LineSegments(edgesGeometry, edgeMaterial);
+  const wireframeLine = new THREE.LineSegments(edgesGeometry, wireframeMaterial);
 
   // Store references
   meshGroup.userData = { solidMesh, edgesLine, wireframeLine };

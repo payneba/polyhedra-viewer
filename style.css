@@ -20,6 +20,7 @@ body {
   top: 20px;
   left: 20px;
   max-height: calc(100vh - 100px);
+  overflow-x: hidden;
   overflow-y: auto;
   background: rgba(0, 0, 0, 0.75);
   padding: 16px;
@@ -98,6 +99,7 @@ body {
   flex-wrap: wrap;
   gap: 5px;
   padding-top: 6px;
+  user-select: none;
 }
 
 .category-section.collapsed .category-content {
@@ -107,6 +109,7 @@ body {
 /* Scrollable Johnson section */
 .category-section.scrollable .category-content {
   max-height: 200px;
+  overflow-x: hidden;
   overflow-y: auto;
   padding-right: 4px;
 }

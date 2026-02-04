@@ -52,23 +52,81 @@ body {
   gap: 5px;
 }
 
+/* Collapsible category sections */
+.category-section {
+  margin-bottom: 12px;
+}
+
+.category-section:last-child {
+  margin-bottom: 0;
+}
+
 .category-label {
   width: 100%;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #a29bfe;
-  margin-top: 10px;
-  margin-bottom: 6px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 0;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.category-label:first-child {
-  margin-top: 0;
-  padding-top: 0;
-  border-top: none;
+.category-label:hover {
+  color: #d0c9ff;
+}
+
+.collapse-icon {
+  font-size: 14px;
+  width: 14px;
+  text-align: center;
+  font-weight: normal;
+}
+
+.category-count {
+  font-weight: 400;
+  color: #666;
+  font-size: 10px;
+}
+
+.category-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding-top: 6px;
+}
+
+.category-section.collapsed .category-content {
+  display: none;
+}
+
+/* Scrollable Johnson section */
+.category-section.scrollable .category-content {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.category-section.scrollable .category-content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.category-section.scrollable .category-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.category-section.scrollable .category-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.category-section.scrollable .category-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 button {

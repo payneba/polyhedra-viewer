@@ -1,14 +1,15 @@
 # Polyhedra Viewer
 
-An interactive 3D viewer for Platonic and Archimedean solids built with Three.js.
+An interactive 3D viewer for Platonic, Archimedean, and Johnson solids built with Three.js.
 
 ## Features
 
-- View all 5 Platonic solids and 13 Archimedean solids
-- Toggle to view dual polyhedra (Catalan solids for Archimedean)
+- View all 5 Platonic solids, 13 Archimedean solids, and 92 Johnson solids
+- Toggle to view dual polyhedra (Catalan solids for Archimedean, computed duals for all)
 - Faces colored by polygon type (triangles, squares, pentagons, etc.)
 - Orbit controls for rotation and zoom
 - Toggle between solid+edges and wireframe display
+- Collapsible category sections with scrollable Johnson solids list
 
 ## Color Convention
 
@@ -64,6 +65,9 @@ Open http://localhost:5173 in your browser.
 - Rhombicosidodecahedron
 - Truncated Icosidodecahedron
 - Snub Dodecahedron
+
+### Johnson Solids (92)
+All 92 Johnson solids (J1-J92), convex polyhedra with regular polygon faces that are not Platonic, Archimedean, prisms, or antiprisms.
 
 ## License
 

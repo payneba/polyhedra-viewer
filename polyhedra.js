@@ -122,9 +122,18 @@ for (const [key, id] of Object.entries(archimedeanMap)) {
   polyhedra[id] = convertPolyhedron(polyhedraData.archimedean[key], 'archimedean');
 }
 
+// Johnson Solids (all 92)
+for (let i = 1; i <= 92; i++) {
+  const key = `J${i}`;
+  if (polyhedraData.johnson[key]) {
+    polyhedra[key.toLowerCase()] = convertPolyhedron(polyhedraData.johnson[key], 'johnson');
+  }
+}
+
 console.log('Polyhedra loaded:', Object.keys(polyhedra).length, 'shapes');
 console.log('Platonic:', Object.values(polyhedra).filter(p => p.category === 'platonic').length);
 console.log('Archimedean:', Object.values(polyhedra).filter(p => p.category === 'archimedean').length);
+console.log('Johnson:', Object.values(polyhedra).filter(p => p.category === 'johnson').length);
 
 // Compute the dual polyhedron using polar reciprocation with respect to the midsphere
 // This ensures all dual faces are planar (required for Catalan solids)

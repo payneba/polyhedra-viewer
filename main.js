@@ -146,7 +146,10 @@ function updateShapeInfo(vertices, faces) {
   if (!infoEl) return;
 
   const data = polyhedra[currentShape];
-  const name = showDual ? dualNames[currentShape] : data.name;
+  // Use specific dual name if available, otherwise "Dual of X"
+  const name = showDual
+    ? (dualNames[currentShape] || `Dual of ${data.name}`)
+    : data.name;
 
   // Count edges (each edge shared by 2 faces)
   const edgeSet = new Set();
@@ -244,61 +247,58 @@ function generateUI() {
   shapeButtons.innerHTML = '';
 
   // Group by category
-  const categories = { platonic: [], archimedean: [] };
+  const categories = { platonic: [], archimedean: [], johnson: [] };
   for (const [key, data] of Object.entries(polyhedra)) {
-    categories[data.category].push({ key, name: data.name });
+    if (categories[data.category]) {
+      categories[data.category].push({ key, name: data.name });
+    }
   }
 
-  // Platonic solids
-  const platonicLabel = document.createElement('div');
-  platonicLabel.className = 'category-label';
-  platonicLabel.textContent = 'Platonic';
-  shapeButtons.appendChild(platonicLabel);
+  // Helper to create a category section
+  function createSection(name, shapes, collapsed = false, scrollable = false) {
+    const section = document.createElement('div');
+    section.className = 'category-section' + (collapsed ? ' collapsed' : '') + (scrollable ? ' scrollable' : '');
 
-  for (const { key, name } of categories.platonic) {
-    const thumb = document.createElement('div');
-    thumb.className = 'shape-thumb';
-    thumb.dataset.shape = key;
-    if (key === currentShape) thumb.classList.add('active');
+    const label = document.createElement('div');
+    label.className = 'category-label';
+    label.innerHTML = `<span class="collapse-icon">${collapsed ? '+' : '−'}</span> ${name} <span class="category-count">(${shapes.length})</span>`;
+    label.addEventListener('click', () => {
+      section.classList.toggle('collapsed');
+      const icon = label.querySelector('.collapse-icon');
+      icon.textContent = section.classList.contains('collapsed') ? '+' : '−';
+    });
+    section.appendChild(label);
 
-    const img = document.createElement('img');
-    img.src = generateThumbnail(key);
-    img.alt = name;
-    thumb.appendChild(img);
+    const content = document.createElement('div');
+    content.className = 'category-content';
 
-    const tooltip = document.createElement('span');
-    tooltip.className = 'tooltip';
-    tooltip.textContent = name;
-    thumb.appendChild(tooltip);
+    for (const { key, name } of shapes) {
+      const thumb = document.createElement('div');
+      thumb.className = 'shape-thumb';
+      thumb.dataset.shape = key;
+      if (key === currentShape) thumb.classList.add('active');
 
-    thumb.addEventListener('click', () => selectShape(key));
-    shapeButtons.appendChild(thumb);
+      const img = document.createElement('img');
+      img.src = generateThumbnail(key);
+      img.alt = name;
+      thumb.appendChild(img);
+
+      const tooltip = document.createElement('span');
+      tooltip.className = 'tooltip';
+      tooltip.textContent = name;
+      thumb.appendChild(tooltip);
+
+      thumb.addEventListener('click', () => selectShape(key));
+      content.appendChild(thumb);
+    }
+
+    section.appendChild(content);
+    return section;
   }
 
-  // Archimedean solids
-  const archiLabel = document.createElement('div');
-  archiLabel.className = 'category-label';
-  archiLabel.textContent = 'Archimedean';
-  shapeButtons.appendChild(archiLabel);
-
-  for (const { key, name } of categories.archimedean) {
-    const thumb = document.createElement('div');
-    thumb.className = 'shape-thumb';
-    thumb.dataset.shape = key;
-
-    const img = document.createElement('img');
-    img.src = generateThumbnail(key);
-    img.alt = name;
-    thumb.appendChild(img);
-
-    const tooltip = document.createElement('span');
-    tooltip.className = 'tooltip';
-    tooltip.textContent = name;
-    thumb.appendChild(tooltip);
-
-    thumb.addEventListener('click', () => selectShape(key));
-    shapeButtons.appendChild(thumb);
-  }
+  shapeButtons.appendChild(createSection('Platonic', categories.platonic, false));
+  shapeButtons.appendChild(createSection('Archimedean', categories.archimedean, false));
+  shapeButtons.appendChild(createSection('Johnson', categories.johnson, true, true));
 
   // Generate color legend
   generateColorLegend();

@@ -4,6 +4,53 @@
   box-sizing: border-box;
 }
 
+/* Theme variables */
+:root {
+  --bg-panel: rgba(0, 0, 0, 0.75);
+  --bg-panel-solid: #1a1a2e;
+  --text-primary: white;
+  --text-secondary: #bbb;
+  --text-muted: #666;
+  --text-legend: #ccc;
+  --accent: #6c5ce7;
+  --accent-hover: #a29bfe;
+  --accent-glow: rgba(108, 92, 231, 0.5);
+  --border-light: rgba(255, 255, 255, 0.2);
+  --border-hover: rgba(255, 255, 255, 0.5);
+  --bg-button: rgba(255, 255, 255, 0.1);
+  --bg-button-hover: rgba(255, 255, 255, 0.2);
+  --bg-thumb: rgba(0, 0, 0, 0.3);
+  --bg-tooltip: rgba(0, 0, 0, 0.9);
+  --scrollbar-track: rgba(255, 255, 255, 0.1);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.3);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.5);
+  --scene-bg: #1a1a2e;
+  --edge-color: #ffffff;
+}
+
+body.light-mode {
+  --bg-panel: rgba(255, 255, 255, 0.9);
+  --bg-panel-solid: #f5f5f5;
+  --text-primary: #222;
+  --text-secondary: #555;
+  --text-muted: #999;
+  --text-legend: #444;
+  --accent: #6c5ce7;
+  --accent-hover: #5a4acf;
+  --accent-glow: rgba(108, 92, 231, 0.3);
+  --border-light: rgba(0, 0, 0, 0.15);
+  --border-hover: rgba(0, 0, 0, 0.4);
+  --bg-button: rgba(0, 0, 0, 0.05);
+  --bg-button-hover: rgba(0, 0, 0, 0.1);
+  --bg-thumb: rgba(255, 255, 255, 0.8);
+  --bg-tooltip: rgba(50, 50, 50, 0.95);
+  --scrollbar-track: rgba(0, 0, 0, 0.1);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.4);
+  --scene-bg: #e8e8f0;
+  --edge-color: #333333;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow: hidden;
@@ -22,10 +69,10 @@ body {
   max-height: calc(100vh - 100px);
   overflow-x: hidden;
   overflow-y: auto;
-  background: rgba(0, 0, 0, 0.75);
+  background: var(--bg-panel);
   padding: 16px;
   border-radius: 10px;
-  color: white;
+  color: var(--text-primary);
   backdrop-filter: blur(10px);
   width: 250px;
 }
@@ -43,7 +90,7 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #bbb;
+  color: var(--text-secondary);
   margin-bottom: 10px;
 }
 
@@ -68,7 +115,7 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #a29bfe;
+  color: var(--accent);
   padding: 6px 0;
   cursor: pointer;
   user-select: none;
@@ -78,7 +125,7 @@ body {
 }
 
 .category-label:hover {
-  color: #d0c9ff;
+  color: var(--accent-hover);
 }
 
 .collapse-icon {
@@ -90,7 +137,7 @@ body {
 
 .category-count {
   font-weight: 400;
-  color: #666;
+  color: var(--text-muted);
   font-size: 10px;
 }
 
@@ -119,23 +166,23 @@ body {
 }
 
 .category-section.scrollable .category-content::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--scrollbar-track);
   border-radius: 3px;
 }
 
 .category-section.scrollable .category-content::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 
 .category-section.scrollable .category-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--scrollbar-thumb-hover);
 }
 
 button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
+  background: var(--bg-button);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
@@ -144,12 +191,13 @@ button {
 }
 
 button:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--bg-button-hover);
 }
 
 button.active {
-  background: #6c5ce7;
-  border-color: #6c5ce7;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
 }
 
 /* Shape thumbnails */
@@ -157,21 +205,21 @@ button.active {
   width: 44px;
   height: 44px;
   border-radius: 5px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid var(--border-light);
   cursor: pointer;
   transition: all 0.2s ease;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--bg-thumb);
   position: relative;
 }
 
 .shape-thumb:hover {
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: var(--border-hover);
   transform: scale(1.05);
 }
 
 .shape-thumb.active {
-  border-color: #6c5ce7;
-  box-shadow: 0 0 8px rgba(108, 92, 231, 0.5);
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 
 .shape-thumb img {
@@ -185,7 +233,7 @@ button.active {
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.9);
+  background: var(--bg-tooltip);
   color: white;
   padding: 4px 8px;
   border-radius: 4px;
@@ -214,7 +262,7 @@ button.active {
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  color: #ccc;
+  color: var(--text-legend);
 }
 
 .color-swatch {
@@ -229,10 +277,10 @@ button.active {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.75);
+  background: var(--bg-panel);
   padding: 12px 24px;
   border-radius: 8px;
-  color: white;
+  color: var(--text-primary);
   backdrop-filter: blur(10px);
   text-align: center;
 }
@@ -250,7 +298,7 @@ button.active {
 
 #shape-info .shape-stats {
   font-size: 13px;
-  color: #aaa;
+  color: var(--text-secondary);
   display: flex;
   gap: 12px;
 }
@@ -265,15 +313,35 @@ button.active {
 }
 
 #controls::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--scrollbar-track);
   border-radius: 3px;
 }
 
 #controls::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 
 #controls::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Theme toggle button */
+#theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+}
+
+#theme-toggle:hover {
+  background: var(--bg-button-hover);
 }

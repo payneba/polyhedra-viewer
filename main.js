@@ -364,6 +364,28 @@ dualToggle.addEventListener('click', () => {
   createPolyhedron();
 });
 
+// Theme toggle handler
+let isDarkMode = true;
+const themeToggle = document.getElementById('theme-toggle');
+themeToggle.addEventListener('click', () => {
+  isDarkMode = !isDarkMode;
+  document.body.classList.toggle('light-mode', !isDarkMode);
+  themeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+
+  // Update scene background
+  scene.background = new THREE.Color(isDarkMode ? 0x1a1a2e : 0xe8e8f0);
+
+  // Update edge colors
+  const edgeColor = isDarkMode ? 0xffffff : 0x333333;
+  edgeMaterial.color.setHex(edgeColor);
+  wireframeMaterial.color.setHex(edgeColor);
+
+  // Adjust lighting for light mode (brighter)
+  ambientLight.intensity = isDarkMode ? 0.5 : 0.8;
+  directionalLight.intensity = isDarkMode ? 0.8 : 1.0;
+  directionalLight2.intensity = isDarkMode ? 0.4 : 0.6;
+});
+
 // Handle window resize
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;

@@ -1,6 +1,6 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { polyhedra, polygonColors, buildColoredGeometry, buildEdgesGeometry, computeDual } from './polyhedra.js';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+import { polyhedra, polygonColors, buildColoredGeometry, buildEdgesGeometry, computeDual, initPolyhedraData } from './polyhedra.js';
 
 // Scene setup
 const scene = new THREE.Scene();
@@ -401,15 +401,20 @@ function animate() {
 }
 
 // Initialize
-console.log('Initializing...');
-try {
-  console.log('polyhedra:', polyhedra);
-  generateUI();
-  console.log('UI generated');
-  createPolyhedron();
-  console.log('Polyhedron created');
-  animate();
-  console.log('Animation started');
-} catch (e) {
-  console.error('Initialization error:', e);
+async function init() {
+  console.log('Initializing...');
+  try {
+    await initPolyhedraData();
+    console.log('polyhedra:', polyhedra);
+    generateUI();
+    console.log('UI generated');
+    createPolyhedron();
+    console.log('Polyhedron created');
+    animate();
+    console.log('Animation started');
+  } catch (e) {
+    console.error('Initialization error:', e);
+  }
 }
+
+init();

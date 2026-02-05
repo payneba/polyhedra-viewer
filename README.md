@@ -26,23 +26,24 @@ An interactive 3D viewer for Platonic, Archimedean, and Johnson solids built wit
 
 **View online:** https://payneba.github.io/polyhedra-viewer/
 
-**Run locally:**
+**Run locally:** Serve the directory with any static HTTP server:
 ```bash
-npm install
-npm run dev
+# Python
+python -m http.server 8000
+
+# Node.js
+npx serve .
+
+# Or open index.html directly (may have CORS issues with some browsers)
 ```
 
-Open http://localhost:5173/polyhedra-viewer/ in your browser.
+Then open http://localhost:8000 in your browser.
 
 ## Dependencies
 
-### Runtime
+This is a fully static site with no build step. Dependencies are loaded from CDN:
 
-- **[three](https://threejs.org/)** (v0.170.0) - 3D graphics library for WebGL rendering, camera controls, and geometry
-
-### Development
-
-- **[vite](https://vitejs.dev/)** (v6.0.0) - Fast development server with hot module replacement
+- **[Three.js](https://threejs.org/)** (v0.170.0) - 3D graphics library, loaded from jsdelivr CDN
 
 ### Vendored Data
 

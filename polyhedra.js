@@ -1,13 +1,26 @@
-import * as THREE from 'three';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js';
 
 // Polyhedra geometry data vendored from the "polyhedra" npm package
 // Original data from "Virtual Polyhedra" by George W. Hart
 // See data/COPYRIGHT.txt for full attribution
-import platonic from './data/platonic.json';
-import archimedean from './data/archimedean.json';
-import johnson from './data/johnson.json';
 
-const polyhedraData = { platonic, archimedean, johnson };
+// Load JSON data at runtime
+async function loadJSON(url) {
+  const response = await fetch(url);
+  return response.json();
+}
+
+// Initialize polyhedra data (called from main.js)
+let polyhedraData = null;
+export async function initPolyhedraData() {
+  const [platonic, archimedean, johnson] = await Promise.all([
+    loadJSON('./data/platonic.json'),
+    loadJSON('./data/archimedean.json'),
+    loadJSON('./data/johnson.json')
+  ]);
+  polyhedraData = { platonic, archimedean, johnson };
+  buildPolyhedraMap();
+}
 
 // Color convention by polygon type (number of sides)
 export const polygonColors = {
@@ -105,10 +118,6 @@ const platonicMap = {
   'Icosahedron': 'icosahedron'
 };
 
-for (const [key, id] of Object.entries(platonicMap)) {
-  polyhedra[id] = convertPolyhedron(polyhedraData.platonic[key], 'platonic');
-}
-
 // Archimedean Solids (all 13)
 const archimedeanMap = {
   'TruncatedTetrahedron': 'truncatedTetrahedron',
@@ -126,22 +135,29 @@ const archimedeanMap = {
   'SnubIcosidodecahedron': 'snubDodecahedron'
 };
 
-for (const [key, id] of Object.entries(archimedeanMap)) {
-  polyhedra[id] = convertPolyhedron(polyhedraData.archimedean[key], 'archimedean');
-}
-
-// Johnson Solids (all 92)
-for (let i = 1; i <= 92; i++) {
-  const key = `J${i}`;
-  if (polyhedraData.johnson[key]) {
-    polyhedra[key.toLowerCase()] = convertPolyhedron(polyhedraData.johnson[key], 'johnson');
+// Build polyhedra map after data is loaded
+function buildPolyhedraMap() {
+  for (const [key, id] of Object.entries(platonicMap)) {
+    polyhedra[id] = convertPolyhedron(polyhedraData.platonic[key], 'platonic');
   }
-}
 
-console.log('Polyhedra loaded:', Object.keys(polyhedra).length, 'shapes');
-console.log('Platonic:', Object.values(polyhedra).filter(p => p.category === 'platonic').length);
-console.log('Archimedean:', Object.values(polyhedra).filter(p => p.category === 'archimedean').length);
-console.log('Johnson:', Object.values(polyhedra).filter(p => p.category === 'johnson').length);
+  for (const [key, id] of Object.entries(archimedeanMap)) {
+    polyhedra[id] = convertPolyhedron(polyhedraData.archimedean[key], 'archimedean');
+  }
+
+  // Johnson Solids (all 92)
+  for (let i = 1; i <= 92; i++) {
+    const key = `J${i}`;
+    if (polyhedraData.johnson[key]) {
+      polyhedra[key.toLowerCase()] = convertPolyhedron(polyhedraData.johnson[key], 'johnson');
+    }
+  }
+
+  console.log('Polyhedra loaded:', Object.keys(polyhedra).length, 'shapes');
+  console.log('Platonic:', Object.values(polyhedra).filter(p => p.category === 'platonic').length);
+  console.log('Archimedean:', Object.values(polyhedra).filter(p => p.category === 'archimedean').length);
+  console.log('Johnson:', Object.values(polyhedra).filter(p => p.category === 'johnson').length);
+}
 
 // Compute the dual polyhedron using polar reciprocation with respect to the midsphere
 // This ensures all dual faces are planar (required for Catalan solids)

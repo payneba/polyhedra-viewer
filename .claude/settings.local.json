@@ -11,7 +11,10 @@
       "Bash(git commit -m \"$(cat <<''EOF''\nUse polyhedra npm package for accurate vertex/face data\n\n- Add all 13 Archimedean solids with proper face definitions\n- Replace hand-coded vertex data with finnp/polyhedra package\n- All faces now correctly colored by polygon type\n- Remove convex hull fallback (no longer needed)\n- White edges for better visibility on dark background\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git commit:*)",
       "Bash(git -C \"C:\\Users\\bradl\\Dropbox\\Projects\\Claude\\threejs_test\" add data/ README.md package.json polyhedra.js)",
-      "Bash(git -C \"C:\\Users\\bradl\\Dropbox\\Projects\\Claude\\threejs_test\" commit -m \"$(cat <<''EOF''\nVendor polyhedra geometry data to remove npm dependency\n\n- Copy platonic, archimedean, johnson JSON data to data/ directory\n- Add COPYRIGHT.txt with full attribution to George W. Hart\n- Update polyhedra.js to import from local data files\n- Remove polyhedra npm package dependency\n- Update README with data attribution and live site URL\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git -C \"C:\\Users\\bradl\\Dropbox\\Projects\\Claude\\threejs_test\" commit -m \"$(cat <<''EOF''\nVendor polyhedra geometry data to remove npm dependency\n\n- Copy platonic, archimedean, johnson JSON data to data/ directory\n- Add COPYRIGHT.txt with full attribution to George W. Hart\n- Update polyhedra.js to import from local data files\n- Remove polyhedra npm package dependency\n- Update README with data attribution and live site URL\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(wc:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:cdn.jsdelivr.net)"
     ]
   }
 }

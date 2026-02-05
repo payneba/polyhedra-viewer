@@ -170,56 +170,77 @@ function updateShapeInfo(vertices, faces) {
   `;
 }
 
-// Generate a thumbnail for a polyhedron
-function generateThumbnail(shapeKey, size = 50) {
-  const data = polyhedra[shapeKey];
+// Shared thumbnail renderer (reused to avoid WebGL context limits)
+let thumbRenderer = null;
+let thumbScene = null;
+let thumbCamera = null;
+let thumbMaterial = null;
+let thumbEdgeMaterial = null;
 
-  // Create offscreen renderer
-  const thumbRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+function initThumbnailRenderer(size = 50) {
+  thumbRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   thumbRenderer.setSize(size, size);
   thumbRenderer.setClearColor(0x000000, 0);
 
-  // Create scene
-  const thumbScene = new THREE.Scene();
+  thumbScene = new THREE.Scene();
 
-  // Create camera
-  const thumbCamera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+  thumbCamera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
   thumbCamera.position.z = 6;
 
-  // Add lighting
   const thumbAmbient = new THREE.AmbientLight(0xffffff, 0.6);
   thumbScene.add(thumbAmbient);
   const thumbDir = new THREE.DirectionalLight(0xffffff, 0.8);
   thumbDir.position.set(2, 2, 2);
   thumbScene.add(thumbDir);
 
-  // Create grayscale material
-  const thumbMaterial = new THREE.MeshStandardMaterial({
+  thumbMaterial = new THREE.MeshStandardMaterial({
     color: 0x888888,
     metalness: 0.1,
     roughness: 0.6,
     side: THREE.DoubleSide
   });
 
+  thumbEdgeMaterial = new THREE.LineBasicMaterial({ color: 0xcccccc });
+}
+
+function disposeThumbnailRenderer() {
+  if (thumbRenderer) {
+    thumbRenderer.dispose();
+    thumbMaterial.dispose();
+    thumbEdgeMaterial.dispose();
+    thumbRenderer = null;
+    thumbScene = null;
+    thumbCamera = null;
+    thumbMaterial = null;
+    thumbEdgeMaterial = null;
+  }
+}
+
+// Generate a thumbnail for a polyhedron
+function generateThumbnail(shapeKey, size = 50) {
+  const data = polyhedra[shapeKey];
+
   // Build geometry
   const geometry = buildColoredGeometry(data.vertices, data.faces, 1.2);
-  // Override colors with grayscale
   const grayGeometry = new THREE.BufferGeometry();
   grayGeometry.setAttribute('position', geometry.getAttribute('position'));
   grayGeometry.setAttribute('normal', geometry.getAttribute('normal'));
 
   const mesh = new THREE.Mesh(grayGeometry, thumbMaterial);
 
-  // Add edges
   const edgesGeometry = buildEdgesGeometry(data.vertices, data.faces, 1.2);
-  const edgesMaterial = new THREE.LineBasicMaterial({ color: 0xcccccc });
-  const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+  const edges = new THREE.LineSegments(edgesGeometry, thumbEdgeMaterial);
 
   // Rotate for better view
   mesh.rotation.x = 0.4;
   mesh.rotation.y = 0.6;
   edges.rotation.x = 0.4;
   edges.rotation.y = 0.6;
+
+  // Clear previous objects (keep lights)
+  while (thumbScene.children.length > 2) {
+    thumbScene.remove(thumbScene.children[thumbScene.children.length - 1]);
+  }
 
   thumbScene.add(mesh);
   thumbScene.add(edges);
@@ -230,13 +251,10 @@ function generateThumbnail(shapeKey, size = 50) {
   // Get data URL
   const dataUrl = thumbRenderer.domElement.toDataURL();
 
-  // Cleanup
-  thumbRenderer.dispose();
+  // Cleanup geometry only
   grayGeometry.dispose();
   geometry.dispose();
   edgesGeometry.dispose();
-  thumbMaterial.dispose();
-  edgesMaterial.dispose();
 
   return dataUrl;
 }
@@ -245,6 +263,9 @@ function generateThumbnail(shapeKey, size = 50) {
 function generateUI() {
   const shapeButtons = document.getElementById('shape-buttons');
   shapeButtons.innerHTML = '';
+
+  // Initialize shared thumbnail renderer
+  initThumbnailRenderer();
 
   // Group by category
   const categories = { platonic: [], archimedean: [], johnson: [] };
@@ -299,6 +320,9 @@ function generateUI() {
   shapeButtons.appendChild(createSection('Platonic', categories.platonic, false));
   shapeButtons.appendChild(createSection('Archimedean', categories.archimedean, false));
   shapeButtons.appendChild(createSection('Johnson', categories.johnson, true, true));
+
+  // Dispose shared thumbnail renderer
+  disposeThumbnailRenderer();
 
   // Generate color legend
   generateColorLegend();

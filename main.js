@@ -268,7 +268,7 @@ function generateUI() {
   initThumbnailRenderer();
 
   // Group by category
-  const categories = { platonic: [], archimedean: [], johnson: [] };
+  const categories = { platonic: [], archimedean: [], catalan: [], johnson: [] };
   for (const [key, data] of Object.entries(polyhedra)) {
     if (categories[data.category]) {
       categories[data.category].push({ key, name: data.name });
@@ -319,6 +319,7 @@ function generateUI() {
 
   shapeButtons.appendChild(createSection('Platonic', categories.platonic, false));
   shapeButtons.appendChild(createSection('Archimedean', categories.archimedean, false));
+  shapeButtons.appendChild(createSection('Catalan', categories.catalan, true));
   shapeButtons.appendChild(createSection('Johnson', categories.johnson, true, true));
 
   // Dispose shared thumbnail renderer

@@ -138,7 +138,21 @@ const dualNames = {
   truncatedIcosahedron: 'Pentakis Dodecahedron',
   rhombicosidodecahedron: 'Deltoidal Hexecontahedron',
   truncatedIcosidodecahedron: 'Disdyakis Triacontahedron',
-  snubDodecahedron: 'Pentagonal Hexecontahedron'
+  snubDodecahedron: 'Pentagonal Hexecontahedron',
+  // Catalan -> Archimedean (reverse duals)
+  catalan_truncatedTetrahedron: 'Truncated Tetrahedron',
+  catalan_cuboctahedron: 'Cuboctahedron',
+  catalan_truncatedCube: 'Truncated Cube',
+  catalan_truncatedOctahedron: 'Truncated Octahedron',
+  catalan_rhombicuboctahedron: 'Rhombicuboctahedron',
+  catalan_truncatedCuboctahedron: 'Truncated Cuboctahedron',
+  catalan_snubCube: 'Snub Cube',
+  catalan_icosidodecahedron: 'Icosidodecahedron',
+  catalan_truncatedDodecahedron: 'Truncated Dodecahedron',
+  catalan_truncatedIcosahedron: 'Truncated Icosahedron',
+  catalan_rhombicosidodecahedron: 'Rhombicosidodecahedron',
+  catalan_truncatedIcosidodecahedron: 'Truncated Icosidodecahedron',
+  catalan_snubDodecahedron: 'Snub Dodecahedron'
 };
 
 function updateShapeInfo(vertices, faces) {

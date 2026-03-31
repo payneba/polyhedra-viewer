@@ -100,9 +100,14 @@ body {
   gap: 5px;
 }
 
+#shape-buttons {
+  flex-direction: column;
+}
+
 /* Collapsible category sections */
 .category-section {
   margin-bottom: 12px;
+  width: 100%;
 }
 
 .category-section:last-child {

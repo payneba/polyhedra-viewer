@@ -135,6 +135,24 @@ const archimedeanMap = {
   'SnubIcosidodecahedron': 'snubDodecahedron'
 };
 
+// Catalan Solids - duals of the Archimedean solids
+// Maps archimedean internal key -> Catalan solid name
+const catalanNames = {
+  truncatedTetrahedron: 'Triakis Tetrahedron',
+  cuboctahedron: 'Rhombic Dodecahedron',
+  truncatedCube: 'Triakis Octahedron',
+  truncatedOctahedron: 'Tetrakis Hexahedron',
+  rhombicuboctahedron: 'Deltoidal Icositetrahedron',
+  truncatedCuboctahedron: 'Disdyakis Dodecahedron',
+  snubCube: 'Pentagonal Icositetrahedron',
+  icosidodecahedron: 'Rhombic Triacontahedron',
+  truncatedDodecahedron: 'Triakis Icosahedron',
+  truncatedIcosahedron: 'Pentakis Dodecahedron',
+  rhombicosidodecahedron: 'Deltoidal Hexecontahedron',
+  truncatedIcosidodecahedron: 'Disdyakis Triacontahedron',
+  snubDodecahedron: 'Pentagonal Hexecontahedron'
+};
+
 // Build polyhedra map after data is loaded
 function buildPolyhedraMap() {
   for (const [key, id] of Object.entries(platonicMap)) {
@@ -153,9 +171,25 @@ function buildPolyhedraMap() {
     }
   }
 
+  // Catalan Solids (duals of Archimedean solids)
+  for (const [archimedeanKey, catalanName] of Object.entries(catalanNames)) {
+    const archimedean = polyhedra[archimedeanKey];
+    if (archimedean) {
+      const dual = computeDual(archimedean.vertices, archimedean.faces);
+      polyhedra[`catalan_${archimedeanKey}`] = {
+        name: catalanName,
+        category: 'catalan',
+        vertices: dual.vertices,
+        faces: dual.faces,
+        sourceKey: archimedeanKey
+      };
+    }
+  }
+
   console.log('Polyhedra loaded:', Object.keys(polyhedra).length, 'shapes');
   console.log('Platonic:', Object.values(polyhedra).filter(p => p.category === 'platonic').length);
   console.log('Archimedean:', Object.values(polyhedra).filter(p => p.category === 'archimedean').length);
+  console.log('Catalan:', Object.values(polyhedra).filter(p => p.category === 'catalan').length);
   console.log('Johnson:', Object.values(polyhedra).filter(p => p.category === 'johnson').length);
 }
 
